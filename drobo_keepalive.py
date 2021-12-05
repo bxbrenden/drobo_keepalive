@@ -4,6 +4,8 @@ import os
 import sys
 import time
 
+import pytz
+
 
 def configure_logging():
     logger = logging.getLogger(__name__)
@@ -54,11 +56,13 @@ def keepalive(drobo_path, sleep_duration):
     global logger
 
     try:
-        now = str(datetime.now().replace(microsecond=0))
-        logger.info(f'{now}: Writing keepalive file to {str(drobo_path)}.')
+        now = datetime.now().replace(microsecond=0)
+        pacific_time = pytz.timezone('America/Los_Angeles')
+        local_time = pacific_time.localize(now).strftime('%Y-%m-%d %r')
+        logger.info(f'{local_time}: Writing keepalive file to {str(drobo_path)}.')
 
         with open(drobo_path + '/.keepalive', 'w') as drobo_file:
-            drobo_file.write(now)
+            drobo_file.write(local_time + '\n')
         time.sleep(sleep_duration)
         return True
 
