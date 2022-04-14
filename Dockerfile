@@ -1,4 +1,4 @@
-FROM python:3.9.7
+FROM python:3.10.4
 
 USER root
 
@@ -11,4 +11,5 @@ RUN pip install -r requirements.txt
 
 COPY drobo_keepalive.py drobo_keepalive.py
 
-CMD ["python3", "drobo_keepalive.py"]
+ENTRYPOINT ["/usr/local/bin/python3"]
+CMD ["drobo_keepalive.py"]
